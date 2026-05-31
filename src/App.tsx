@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
+import GameContainer from './components/GameContainer/GameContainer';
 
 function App() {
   return (
-    <div>Work</div>
+    <div className='app'><GameContainer /></div>
   );
 }
 
