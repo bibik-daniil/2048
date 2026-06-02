@@ -1,6 +1,6 @@
 export interface cell {
   readonly x: number;
-  readonly y: number;
+  y: number;
   score: number;
   availabilityScore: boolean;
   id: number;
