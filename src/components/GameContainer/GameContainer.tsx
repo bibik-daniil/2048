@@ -1,32 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { initContainer } from "../../models/cellRows";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 import CellContainer from "../CellContainer/CellContainer";
 import cl from "./GameContainer.module.css";
+import { moveLeft } from "../../script/move/moveLeft";
+import { moveUp } from "../../script/move/moveUp";
+import { moveDown } from "../../script/move/moveDown";
+import { moveRight } from "../../script/move/moveRight";
+import { checkGameOver } from "../../script/checkGameOver";
+import { startNewGame } from "../../script/newGame";
+import { setContainer } from "../../redux/containerSlice";
+import { setGameOver } from "../../redux/gameOverSlice";
 
 const GameContainer = () => {
-  const [container, setContainer] = useState(initContainer());
+  const square = useSelector((state: RootState) => state.square);
+  const container = useSelector((state: RootState) => state.container);
+  const gameOver = useSelector((state: RootState) => state.gameOver);
 
-  const initRandomIndex = () => Math.floor(Math.random() * container.length);
-  const firstScore: number[] = [2, 2, 4]; // Сделал две двойки, чтобы шанс выпадения числа 2 был выше
-  const initRandomScore = (arrayScore: number[]) =>
-    arrayScore[Math.floor(Math.random() * firstScore.length)];
-
-  const randomCellScore = () => {
-    const randomIndex: number = initRandomIndex();
-    const randomScore = initRandomScore(firstScore);
-
-   const startContainer = container.map((cell, index) => ({
-    ...cell,
-    score: index === randomIndex ? randomScore : 0,
-    availabilityScore: index === randomIndex ? true : false,
-  }))
-
-  setContainer(startContainer)
-};
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    randomCellScore();
-  }, []);
+    dispatch(setContainer(startNewGame(square, dispatch)));
+  }, [square]);
 
   useEffect(() => {
     const keystroke = (event: KeyboardEvent) => {
@@ -36,20 +31,29 @@ const GameContainer = () => {
         event.preventDefault();
 
         const newContainer = [...container];
+        let updatedContainer;
 
         switch (event.key) {
           case "ArrowUp":
-            let availabilityScoreIndex = newContainer.findIndex(cell => cell.availabilityScore);
-            console.log(availabilityScoreIndex);
-            newContainer[availabilityScoreIndex].availabilityScore = false
-            newContainer[availabilityScoreIndex].score = 0
-            newContainer[availabilityScoreIndex-4].availabilityScore = true
-            newContainer[availabilityScoreIndex-4].score = 2
-            randomCellScore()
-            setContainer(newContainer);
+            updatedContainer = moveUp(newContainer, dispatch, square);
+            break;
+          case "ArrowLeft":
+            updatedContainer = moveLeft(newContainer, dispatch, square);
+            break;
+          case "ArrowDown":
+            updatedContainer = moveDown(newContainer, dispatch, square);
+            break;
+          case "ArrowRight":
+            updatedContainer = moveRight(newContainer, dispatch, square);
             break;
           default:
-            break;
+            return;
+        }
+
+        dispatch(setContainer(updatedContainer));
+        if (checkGameOver(updatedContainer, dispatch, square)) {
+          dispatch(setGameOver(true));
+          console.log("ghjbuhasdgag");
         }
       }
     };
@@ -59,10 +63,24 @@ const GameContainer = () => {
   }, [container]);
 
   return (
-    <div className={cl.container}>
-      {container.map((cell) => {
-        return <CellContainer {...cell} key={cell.id} />;
-      })}
+    <div style={{ position: "relative" }}>
+      <div
+        className={cl.container}
+        style={{
+          gridTemplateColumns: `repeat(${square.cols}, 100px)`,
+          gridTemplateRows: `repeat(${square.rows}, 100px)`,
+        }}
+      >
+        {container.map((cell) => {
+          return <CellContainer {...cell} key={cell.id} />;
+        })}
+      </div>
+
+      {gameOver && (
+        <div className={cl.overlay}>
+          <div className={cl.gameOverText}>Вы проиграли</div>
+        </div>
+      )}
     </div>
   );
 };
