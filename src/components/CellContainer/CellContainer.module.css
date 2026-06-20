@@ -1,0 +1,46 @@
+.cell {
+    width: 100px;
+    height: 100px;
+    background-color: rgba(238, 228, 218, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 55px;
+    border-radius: 6px;
+    pointer-events: none;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .cell {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(238, 228, 218, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 45px;
+    border-radius: 6px;
+    pointer-events: none;
+    font-weight: bold;
+    --cell: 35px;
+    --cell-thousand: 25px
+}    
+}
+
+@media (max-width: 375px) {
+    .cell {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(238, 228, 218, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    border-radius: 6px;
+    pointer-events: none;
+    font-weight: bold;
+    --cell: 30px;
+    --cell-thousand: 20px
+}    
+}

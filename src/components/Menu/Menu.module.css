@@ -1,0 +1,237 @@
+.menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 475px;
+  align-items: center;
+  margin-bottom: 0px;
+  height: 100px;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.settings {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 475px;
+  align-items: center;
+}
+
+h1 {
+  font-size: 68px;
+  color: rgb(119, 110, 101);
+  pointer-events: none;
+}
+
+.getScore {
+  display: flex;
+  align-items: center;
+}
+
+.increase {
+  margin: 10px;
+  font-size: 20px;
+  pointer-events: none;
+  animation: disappear 1s ease-out;
+  animation-fill-mode: forwards;
+}
+
+.noneIncrease {
+  opacity: 0
+}
+
+.score {
+  background-color: #bbada0;
+  padding: 3px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  font-size: 25px;
+  min-width: 65px;
+  text-align: center;
+  pointer-events: none;
+}
+
+h2 {
+  color: #eee4da;
+  margin: 0%;
+  font-size: 15px;
+}
+
+button {
+  margin-bottom: 10px;
+  background-color: #bbada0;
+  padding: 7px;
+  border-radius: 6px;
+  color: #eee4da;
+  font-weight: bold;
+  font-size: 20px;
+  min-width: 65px;
+  text-align: center;
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: #a0958b
+}
+
+button:active {
+  background-color: rgb(119, 110, 101);
+}
+
+label { 
+  font-weight: bold;
+  font-size: 20px;
+  min-width: 65px;
+  text-align: center;
+  border: none;
+  margin: 3px;
+}
+
+input {
+  width: 40px;
+  border-radius: 6px;
+  border: 1px solid ;
+}
+
+.form {
+  animation: nomination 1s ease-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: #bbada0;
+  border-radius: 12px;
+  color: #eee4da;
+  width: 475px;
+}
+
+.Unform {
+  animation: push 1s ease-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: #bbada0;
+  border-radius: 12px;
+  color: #eee4da;
+  width: 475px;
+}
+
+.submitButton {
+  width: 75px;
+  background-color: #eee4da;
+  color: rgb(119, 110, 101);
+  margin-top: 10px;
+}
+
+.submitButton:hover {
+  background-color: #dbcfc3;
+}
+
+.submitButton:active {
+  background-color: #c8bfb6
+}
+
+.buttonSettings {
+  width: 100px;
+  height: 37px;
+}
+
+.formSettings {
+  position: relative;
+  overflow: hidden;
+}
+
+.moveContainer {
+  animation: nominationDiv 1s ease-out;
+}
+
+.returnContainer {
+  animation: pushDiv 1s ease-out;
+}
+
+@keyframes disappear{
+  from {
+    transform: translateY(0px); opacity: 1;
+  }
+  to {
+    transform: translateY(-40px); opacity: 0;
+  }
+}
+
+@keyframes nomination{
+  from {
+    transform: translateY(-133px); opacity: 0.3;
+  }
+  to {
+    transform: translateY(0px); opacity: 1;
+  }
+}
+
+@keyframes push{
+  from {
+    transform: translateY(0px); opacity: 1;
+  }
+  to {
+    transform: translateY(-133px); opacity: 0.3;
+  }
+}
+
+@keyframes nominationDiv{
+  from {
+    height: 0px
+  }
+  to {
+    height: 133px
+  }
+}
+
+@keyframes pushDiv{
+  from {
+    height: 133px
+  }
+  to {
+    height: 0px
+  }
+}
+
+@media (max-width: 768px) {
+  .menu {
+    width: 370px;
+  }
+  .settings {
+    width: 370px;
+  }
+  .form {
+    width: 370px;
+  }
+  .Unform {
+    width: 370px;
+  }
+  .formSettings {
+    width: 370px;
+  }
+}
+
+@media (max-width: 375px) {
+  .menu {
+    width: 290px;
+  }
+  .settings {
+    width: 290px;
+  }
+  .form {
+    width: 290px;
+  }
+  .Unform {
+    width: 290px;
+  }
+  .formSettings {
+    width: 290px;
+  }
+}

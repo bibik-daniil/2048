@@ -1,9 +1,14 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
+import GameContainer from "./components/GameContainer/GameContainer";
+import Menu from "./components/Menu/Menu";
 
 function App() {
   return (
-    <div>Work</div>
+    <div className="app">
+      <Menu />
+      <GameContainer />
+    </div>
   );
 }
 
