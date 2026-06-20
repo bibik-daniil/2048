@@ -7,13 +7,12 @@ import { stateSquare } from "../redux/squareSlice";
 
 export const checkGameOver = (
   container: cell[],
-  dispatch: any,
   square: stateSquare,
 ) => {
-  const opportunityMoveUp = moveUp(container, dispatch, square);
-  const opportunityMoveDown = moveDown(container, dispatch, square);
-  const opportunityMoveRight = moveRight(container, dispatch, square);
-  const opportunityMoveLeft = moveLeft(container, dispatch, square);
+  const opportunityMoveUp = moveUp(container, null, square);
+  const opportunityMoveDown = moveDown(container, null, square);
+  const opportunityMoveRight = moveRight(container, null, square);
+  const opportunityMoveLeft = moveLeft(container, null, square);
 
   if (
     JSON.stringify(opportunityMoveUp) === JSON.stringify(container) &&

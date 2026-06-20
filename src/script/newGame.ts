@@ -7,12 +7,15 @@ import { initRandomScore } from "./random";
 export const startNewGame = (
   square: stateSquare,
   dispatch: any,
+  gameOver: boolean
 ) => {
   const newContainer = initContainer(square);
   const containerWithRandomScore = initRandomScore(
     initRandomScore(newContainer),
   ); // Две функции initRandomScore, чтобы в начале было две ячейки с цифрами
   dispatch(resetScore());
-  dispatch(setGameOver(false));
+  if (gameOver) {
+    dispatch(setGameOver());
+  }
   return containerWithRandomScore;
 };

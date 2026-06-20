@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import CellContainer from "../CellContainer/CellContainer";
@@ -12,59 +12,71 @@ import { startNewGame } from "../../script/newGame";
 import { setContainer } from "../../redux/containerSlice";
 import { setGameOver } from "../../redux/gameOverSlice";
 import useSound from "use-sound";
-import ten from "../../sound/ten.mp3"
-import twenty from "../../sound/twenty.wav"
-import fourty from "../../sound/fourty.wav"
-import oneHundred from "../../sound/oneHundred.wav"
-import thousand from "../../sound/thousand.mp3"
-import lose from "../../sound/gameOver.mp3"
+import ten from "../../sound/ten.mp3";
+import twenty from "../../sound/twenty.wav";
+import fourty from "../../sound/fourty.wav";
+import oneHundred from "../../sound/oneHundred.wav";
+import thousand from "../../sound/thousand.mp3";
+import lose from "../../sound/gameOver.mp3";
+import { initRandomScore } from "../../script/random";
 
 const GameContainer = () => {
   const score = useSelector((state: RootState) => state.score);
   const square = useSelector((state: RootState) => state.square);
   const container = useSelector((state: RootState) => state.container);
   const gameOver = useSelector((state: RootState) => state.gameOver);
+  const settings = useSelector((state: RootState) => state.settings);
 
-  const [tenSound] = useSound(ten, {volume: 1})
-  const [twentySound] = useSound(twenty, {volume: 1})
-  const [fourtySound] = useSound(fourty, {volume: 1})
-  const [oneHundredSound] = useSound(oneHundred, {volume: 1})
-  const [thousandSound] = useSound(thousand, {volume: 1})
-  const [gameOverSound] = useSound(lose, {volume: 1})
+  const [tenSound] = useSound(ten, { volume: 1 });
+  const [twentySound] = useSound(twenty, { volume: 1 });
+  const [fourtySound] = useSound(fourty, { volume: 1 });
+  const [oneHundredSound] = useSound(oneHundred, { volume: 1 });
+  const [thousandSound] = useSound(thousand, { volume: 1 });
+  const [gameOverSound] = useSound(lose, { volume: 1 });
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setContainer(startNewGame(square, dispatch)));
-  }, [square]);
+    dispatch(setContainer(startNewGame(square, dispatch, gameOver)));
+  }, [square, dispatch]);
 
   useEffect(() => {
     if (gameOver) {
       gameOverSound();
     }
-  }, [gameOver, gameOverSound])
+  }, [gameOver, gameOverSound]);
+
+  const soundLock = useRef(false);
 
   useEffect(() => {
-    if (score.increase > 0 && score.increase <= 10) {
-      tenSound();
-    }
-    if (score.increase > 10 && score.increase <= 20) {
-      twentySound();
-    }
-    if (score.increase > 20 && score.increase <= 40) {
-      fourtySound();
-    }
-    if (score.increase > 40 && score.increase <= 100) {
-      oneHundredSound();
-    }
-    if (score.increase > 100) {
-      thousandSound();
-    }
-  }, [score, tenSound])
+    if (score.increase > 0 && !soundLock.current) {
+      soundLock.current = true;
+      const currentIncrease = score.increase;
 
-  useEffect(() => {
-    const keystroke = (event: KeyboardEvent) => {
+      if (currentIncrease <= 10) {
+        tenSound();
+      } else if (currentIncrease <= 20) {
+        twentySound();
+      } else if (currentIncrease <= 40) {
+        fourtySound();
+      } else if (currentIncrease <= 100) {
+        oneHundredSound();
+      } else {
+        thousandSound();
+      }
+
+      setTimeout(() => {
+        soundLock.current = false;
+      }, 700);
+    }
+  }, [score.increase]);
+
+  const keystroke = useCallback(
+    (event: KeyboardEvent) => {
       if (
-        ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)
+        ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(
+          event.key,
+        ) &&
+        gameOver === false
       ) {
         event.preventDefault();
 
@@ -88,26 +100,30 @@ const GameContainer = () => {
             return;
         }
 
-        dispatch(setContainer(updatedContainer));
-        if (checkGameOver(updatedContainer, dispatch, square)) {
-          dispatch(setGameOver(true));
-          console.log("ghjbuhasdgag");
+        dispatch(setContainer(initRandomScore(updatedContainer)));
+        if (checkGameOver(updatedContainer, square)) {
+          dispatch(setGameOver());
         }
       }
-    };
+    },
+    [container, dispatch, square],
+  );
 
+  useEffect(() => {
     document.addEventListener("keydown", keystroke);
     return () => document.removeEventListener("keydown", keystroke);
-  }, [container]);
+  }, [keystroke]);
 
   return (
     <div style={{ position: "relative" }}>
       <div
         className={cl.container}
-        style={{
-          gridTemplateColumns: `repeat(${square.cols}, 100px)`,
-          gridTemplateRows: `repeat(${square.rows}, 100px)`,
-        }}
+        style={
+          {
+            "--cols": square.cols,
+            "--rows": square.rows,
+          } as React.CSSProperties
+        }
       >
         {container.map((cell) => {
           return <CellContainer {...cell} key={cell.id} />;
@@ -116,7 +132,11 @@ const GameContainer = () => {
 
       {gameOver && (
         <div className={cl.overlay}>
-          <div className={cl.gameOverText}>Вы проиграли</div>
+          {square.cols > 3 ? (
+            <div className={cl.gameOverText}>Вы проиграли</div>
+          ) : (
+            <div className={cl.miniGameOverText}>Вы проиграли</div>
+          )}
         </div>
       )}
     </div>

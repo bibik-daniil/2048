@@ -16,7 +16,7 @@ const Score = () => {
 
   return (
     <div className={cl.getScore}>
-      <span className={increase}>+{score.increase}</span>
+      <span className={increase}>{score.increase !== 0?`+${score.increase}`: ''}</span>
       <div className={cl.score}>
         <h2>Score</h2>
         {score.score}

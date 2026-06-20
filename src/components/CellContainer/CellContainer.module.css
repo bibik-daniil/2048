@@ -5,91 +5,42 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
+    font-size: 55px;
     border-radius: 6px;
     pointer-events: none;
+    font-weight: bold;
 }
 
-.two {
-    width: 100px;
-    height: 100px;
-    background-color: #eee4da;
+@media (max-width: 768px) {
+    .cell {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(238, 228, 218, 0.35);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 55px;
-    font-weight: bold;
-    color: #776e65;
+    font-size: 45px;
     border-radius: 6px;
     pointer-events: none;
+    font-weight: bold;
+    --cell: 35px;
+    --cell-thousand: 25px
+}    
 }
 
-.four {
-    width: 100px;
-    height: 100px;
-    background-color: #ede0c8;
+@media (max-width: 375px) {
+    .cell {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(238, 228, 218, 0.35);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 55px;
-    font-weight: bold;
-    color: #776e65;
+    font-size: 40px;
     border-radius: 6px;
     pointer-events: none;
-}
-
-.eight {
-    width: 100px;
-    height: 100px;
-    background-color: #f2b179;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 55px;
     font-weight: bold;
-    color: #f9f6f2;
-    border-radius: 6px;
-    pointer-events: none;
-}
-
-.sixteen {
-    width: 100px;
-    height: 100px;
-    background-color: #f59563;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 55px;
-    font-weight: bold;
-    color: #f9f6f2;
-    border-radius: 6px;
-    pointer-events: none;
-}
-
-.thirtyTwo {
-    width: 100px;
-    height: 100px;
-    background-color: #f67c5f;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 55px;
-    font-weight: bold;
-    color: #f9f6f2;
-    border-radius: 6px;
-    pointer-events: none;
-}
-
-.sixtyFour {
-    width: 100px;
-    height: 100px;
-    background-color: #f65e3b;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 55px;
-    font-weight: bold;
-    color: #f9f6f2;
-    border-radius: 6px;
-    pointer-events: none;
+    --cell: 30px;
+    --cell-thousand: 20px
+}    
 }

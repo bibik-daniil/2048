@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getSquare } from "../../redux/squareSlice";
+import { RootState } from "../../redux/store";
 import cl from "./Menu.module.css";
 
 const SettingsContainer = () => {
@@ -9,16 +10,20 @@ const SettingsContainer = () => {
     cols: number | string;
   }
   const [options, setOptions] = useState<stateSquare>({ rows: "", cols: "" });
+  const settings = useSelector((state: RootState) => state.settings);
   const dispatch = useDispatch();
 
   const adjustSquare = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(getSquare(options));
+    if (options.cols < 2 || options.rows < 2) {
+      alert()
+    }
     setOptions({ rows: "", cols: "" });
   };
   return (
-    <>
-      <form  className={cl.form} onSubmit={adjustSquare}>
+    <div className={settings? `${cl.formSettings} ${cl.moveContainer}`: `${cl.formSettings} ${cl.returnContainer}`}>
+      <form  className={settings? cl.form : cl.Unform} onSubmit={adjustSquare}>
         <label>
           Число строк:{" "}
           <input
@@ -39,7 +44,7 @@ const SettingsContainer = () => {
         </label>
         <button type="submit" className={cl.submitButton}>Oк</button>
       </form>
-    </>
+    </div>
   );
 };
 

@@ -8,7 +8,8 @@ const containerSlice = createSlice({
     initialState,
     reducers: {
         setContainer: (state, action) => {
-            return action.payload
+            state.length = 0;
+            state.push(...action.payload);
         }
 
     }
